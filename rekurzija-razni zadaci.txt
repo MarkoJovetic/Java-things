@@ -1,0 +1,145 @@
+import java.util.*;
+public class zadatak1
+{
+	//1.izracunati faktorijel broja
+	public static int faktorijel(int n)
+	{
+		if(n==0)
+			return 1;
+		else
+			return n*faktorijel(n-1);
+	}
+	//-------------------------------
+	
+	//2. izracunati sumu i^2 za i=1 do n
+	public static int suma(int n)
+	{
+		if(n==1)
+			return 1;
+		else
+			return (n*n)+(suma(n-1));
+	}
+	//-------------------------------
+	
+	//3.provjeriti da li je broj prost(rekurzija)
+	public static boolean f (int n, int i)
+	{
+		if(i>n/2)
+			return true;
+		else
+		{
+			if(n%i==0)
+				return false;
+			else
+			{
+			
+				i++;
+				return f(n,i);
+			}
+		}
+	}
+	static boolean prost(int n)
+	{
+		return f(n,2);
+	}
+	//---------------------------------------
+	
+	//4.a) za uneseni string vratiti inverzni string
+	static String reverse(String s)
+	{
+		int i=0;
+		int n=s.length()-1;
+		return f_reverse(s,i,n);
+	}
+	static String f_reverse(String s, int i, int n)
+	{
+		
+		if(i>s.length()/2 || n<s.length()/2)
+			return s;
+		else
+		{
+			
+			String p=inverz(s,n,i);
+			s=p;
+			i++; n--;
+			return f_reverse(s,i,n);
+			
+				
+		}
+	}
+	
+	static String inverz(String p, int n, int i)
+	{
+		String s="";
+		char a=p.charAt(i);
+		char b=p.charAt(n);
+		
+		for(int j=0;j<i;j++)
+		{
+			s+=p.charAt(j);
+		}
+		s+=b;
+		for(int j=i+1;j<n;j++)
+		{
+			s+=p.charAt(j);
+		}
+		s+=a;
+		for(int j=n+1;j<p.length();j++)
+		{
+			s+=p.charAt(j);
+		}
+		return s;
+		
+	}
+	//--------------------------------------------------
+	
+	//4.b) provjeriti da li je uneseni string palindrom
+	
+	
+	
+	//---------------------------------------------------
+	
+	//5.stampaju se sve kombinacije koje cine zbir datog broja(dekompozicija broja)
+	static void dekompozicija(int n, int max, String s)
+	{
+		if(n==0)
+			print(s);
+		else
+		{
+			for(int i=Math.min(max, n);i>0;i--)
+			{
+				dekompozicija(n-i,i,s+" "+i);
+			}
+				
+			
+		}
+	}
+	//--------------------------------------------------------------------------------
+	
+	
+	public static void main(String[]args)
+	{
+		
+		print(faktorijel(10));//za prvi zadatak
+		
+		print(suma(3));//za drugi zadatak
+		
+		
+		if(prost(25))	//za treci zadatak
+			print("broj je prost");
+		else
+			print("broj nije prost");
+			
+			
+		print(reverse("matematika"));//za cetvrti zadatak
+		
+		
+		dekompozicija(30,30,"");//za peti zadatak
+		
+		
+	}
+	static void print(Object s)
+	{
+		System.out.println(s);
+	}
+}

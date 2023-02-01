@@ -1,0 +1,85 @@
+import java.util.*;
+import cs1.*;
+/*Unosi se lista cijelih brojeva. Napraviti liste u kojima je 
+ *i-ti element lista listi prosti faktor liste
+ */
+
+
+public class zadaca2
+{
+	//funkcija koja vraca true ako je broj prost, i false ako nije
+	private static boolean prost(int x)
+	{
+		if (x==2 || x==1)
+			return true;
+		else
+		{
+			int brojac=0;
+			for(int i=2;i<x;i++)
+			{
+				if(x%i==0)
+					brojac++;
+			}
+			if(brojac==0)
+				return true;
+			else
+				return false;
+		}
+		
+	}
+	//funkcija koja vraca listu svih prostih djelilaca datog broja
+	private static ArrayList<Integer> prostiFaktori(int x)
+	{
+		ArrayList<Integer> prosti=new ArrayList<Integer>();
+		for(int i=2;i<=x;i++)
+		{
+			if(x%i==0)
+			{
+				
+				if(prost(i))
+				{
+					prosti.add(i);
+				}
+			}
+		}
+		return prosti;
+		
+		
+	}
+	public static void main(String[]args)
+	{
+		ArrayList<Integer> cijeli=new ArrayList<Integer>(); //lista u koju unosimo cijele brojeve
+		ArrayList<ArrayList<Integer>> list=new ArrayList<ArrayList<Integer>>();//lista u kojoj ce se cuvati lista brojeva 
+																			  //prostih djeilaca datog broja
+		System.out.println("Unesite duzinu liste ");
+		int n=Keyboard.readInt();
+		
+		for(int i=0;i<n;i++) 
+		{
+			int a=Keyboard.readInt();  //unos brojeva u listu
+			cijeli.add(a);
+				
+		} 
+		for(int i=0;i<cijeli.size();i++)
+		{
+			list.add(prostiFaktori(cijeli.get(i))); //unos liste brojeva prostih djelilaca u listu
+		}
+		
+		System.out.println("Lista lista:");
+		for(int i=0;i<list.size();i++) 
+		{
+			for(int j=0;j<list.get(i).size();j++)
+			{
+			
+				int a=list.get(i).get(j); //dodjeljuje vrijednost, koja se nalazi na j-oj poziciji i-te liste, promjenljivoj a
+				System.out.printf("%s ", a); 
+				
+			}
+			System.out.println();
+		}
+			
+		
+		
+		
+	}
+}

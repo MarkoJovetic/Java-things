@@ -1,0 +1,289 @@
+import java.util.*;
+import java.io.*;
+public class zadaca1_kosarka
+{
+	//funkcija za izdvajanje prvog tima iz Stringa
+	static String tim1(String s)
+	{
+		String tim="";
+		char c=' ';
+		int i=0;
+		while(c!=':')
+		{
+			c=s.charAt(i);
+			i++;
+		}
+		for(int j=0;j<i-1;j++)
+		{
+			tim+=s.charAt(j);
+		}
+		return tim;
+		
+	}
+//------------------------------------------------
+	
+	//funkcija za izdvajanje drugog tima iz Stinga
+	static String tim2(String s)
+	{
+		int a1=0,a2,i=0;
+		String tim="";
+		char c1=' ';
+		char c2=' ';
+		while(c1!=':')
+		{
+			c1=s.charAt(i);
+			i++;
+			a1++;
+		}
+		a2=a1;
+		while(c2!='-')
+		{
+			c2=s.charAt(i);
+			i++;
+			a2++;
+		}
+		for(int j=a1;j<a2-1;j++)
+		{
+			tim+=s.charAt(j);
+		}
+		return tim;
+		
+	}
+//---------------------------------------------------
+
+	//funkcija za izdvajanje prvog rezultata
+	static int rez1(String s)
+	{
+		int a1=0,a2,i=0;
+		String rez="";
+		char c1=' ';
+		char c2=' ';
+		while(c1!='-')
+		{
+			c1=s.charAt(i);
+			i++;
+			a1++;
+		}
+		a2=a1;
+		while(c2!=':')
+		{
+			c2=s.charAt(i);
+			i++;
+			a2++;
+		}
+		for(int j=a1;j<a2-1;j++)
+		{
+			rez+=s.charAt(j);
+		}
+		
+		int rezultat=Integer.parseInt(rez);//pretvaranje stringa u broj
+		
+		return rezultat;
+		
+	}
+//---------------------------------------------------
+
+	//funkcija za izdvajanje drugog rezultata
+	static int rez2(String s)
+	{
+		int a1=s.length();
+		int i=a1-1;
+		String rez="";
+		char c1=' ';
+		while(c1!=':')
+		{
+			c1=s.charAt(i);
+			i--;
+			a1--;
+		}
+		for(int j=a1+1;j<s.length();j++)
+		{
+			rez+=s.charAt(j);
+		}
+		int rezultat=Integer.parseInt(rez);//pretvaranje stringa u broj
+		
+		return rezultat;
+		
+	}
+
+
+	
+	
+	public static void main(String[]args)
+	{
+		try
+		{
+			FileReader fr=new FileReader("D:\\Toprek\\Ulazne datoteke\\kosarka.txt");
+			BufferedReader br=new BufferedReader(fr);
+			
+			FileWriter fw=new FileWriter("D:\\Toprek\\Izlazne datoteke\\tabela-kosarka.txt");
+			BufferedWriter bw=new BufferedWriter(fw);
+			
+		ArrayList<String> lista_timova=new ArrayList<String>();//nalaze se svi timovi, u redoslijedu, tim1,tim2;tim1,tim2;...
+		ArrayList<Integer> lista_rezultata=new ArrayList<Integer>();//nalaze se rezutati, koji su povezani sa timovia iz lista_timova
+			
+			ArrayList<String> timovi=new ArrayList<String>();//svi timovi, bez ponavljanja
+			ArrayList<Integer> pobjede=new ArrayList<Integer>();
+			ArrayList<Integer> porazi=new ArrayList<Integer>();
+			ArrayList<Double> postotak=new ArrayList<Double>();//pobjede timova u postotcima
+			
+			String s="";
+			while((s=br.readLine())!=null)
+			{
+				String tim_jedan=tim1(s);
+				String tim_dva=tim2(s);
+				//ubacivanje timova i rezultata u liste
+				lista_timova.add(tim_jedan);
+				lista_timova.add(tim_dva);
+				
+				lista_rezultata.add(rez1(s));
+				lista_rezultata.add(rez2(s));
+				
+				
+				
+				
+				//ubacivanje timova u listu bez duplikata
+				
+				if( ( !(timovi.contains(tim_jedan)) )  && ( !(timovi.contains(tim_dva) ) ))//ako ne sadrze ni jedan tim ubacujemo oba
+				{
+					timovi.add(tim_jedan);
+					timovi.add(tim_dva);
+				}
+				else if( (timovi.contains(tim_jedan))   && ( !(timovi.contains(tim_dva) ) ))//ako sadrzi jedan, njega ne ubacujemo
+				{
+					timovi.add(tim_dva);
+				}
+				else if( ( !(timovi.contains(tim_jedan)) )  && (timovi.contains(tim_dva) )) //ako sadrzi drugi, njega ne ubacujemo
+				{
+					timovi.add(tim_jedan);
+				}
+			}
+			int duzina=timovi.size();//duzina za liste pobjede i porazi
+			for(int i=0;i<duzina;i++)//popunjavanje lista pobjede i porazi pocetnim vrijednostima(nulama);
+			{
+				pobjede.add(0);
+				porazi.add(0);
+			}
+			for(int i=0;i<lista_timova.size()-1;i+=2)
+			{
+				if(lista_rezultata.get(i)>lista_rezultata.get(i+1))//poredi rezultat prvog i drugog tima
+				{
+					String tim1=lista_timova.get(i);	//uzima prvi tim
+					int index1=timovi.indexOf(tim1);	//vraca indeks prvog tima iz konacne liste timova bez ponavljanja
+					int pob=pobjede.get(index1);		//vraca broj pobjeda tog tima
+					pob+=1;								//povecava broj pobjeda za 1
+					pobjede.set(index1,pob);			//postavlja novi broj pobjeda na odgovarajuci indeks
+					String tim2=lista_timova.get(i+1);	//uzima drugi tim
+					int index2=timovi.indexOf(tim2);	//vraca njegov indeks u listi timova bez ponavljanja
+					int por=porazi.get(index2);			//vraca broj poraza tog tima
+					por+=1;								//uvecava broj poraza
+					porazi.set(index2,por);				//vraca novi broj poraza na odgovarajucu poziciju
+														//skoro isto radi i u else if petlji...
+						
+				}
+				else if(lista_rezultata.get(i)<lista_rezultata.get(i+1))
+				{
+					String tim1=lista_timova.get(i);
+					int index1=timovi.indexOf(tim1);
+					int por=porazi.get(index1);
+					por+=1;
+					porazi.set(index1,por);
+					String tim2=lista_timova.get(i+1);
+					int index2=timovi.indexOf(tim2);
+					int pob=pobjede.get(index2);
+					pob+=1;
+					pobjede.set(index2,pob);
+					
+				}
+				
+			}
+			
+			
+			
+			
+			
+			for(int i=0;i<duzina;i++)//popunjavanje liste postotak odgovarajucim vrijednostima
+			{
+				int pobjede1=pobjede.get(i);
+				int porazi1=porazi.get(i);
+				//postotak=(a/b)*100, gdje je a=pobjede1, a b= pobjede1+porazi1
+				
+				double postotak1=((double)pobjede1/(pobjede1+porazi1))*100;
+				
+				postotak.add(postotak1);
+				
+			
+				
+			}
+			//sortiranje timova po procentu pobjeda
+//---------------------------------------------------------------------------
+			for(int i=0;i<duzina-1;i++)
+			{
+				for(int j=i+1;j<duzina;j++)
+				{
+					if(postotak.get(i)<=postotak.get(j))
+					{
+						double x=postotak.get(i);
+						postotak.set(i,postotak.get(j));
+						postotak.set(j,x);
+						String tim=timovi.get(i);
+						timovi.set(i,timovi.get(j));
+						timovi.set(j,tim);
+						int pob=pobjede.get(i);
+						pobjede.set(i,pobjede.get(j));
+						pobjede.set(j,pob);
+						int por=porazi.get(i);
+						porazi.set(i,porazi.get(j));
+						porazi.set(j,por);
+					}
+				}
+			}
+			
+			
+			
+			
+//---------------------------------------------------------------------------
+			
+			
+			bw.write("TIM:\t"+"\t\t  "+"   POBJEDE\t"+"     PORAZI"+"\t    UCINKOVITOST");//zaglavlje tabele
+			bw.newLine();
+			
+			//Ispis tabele u datoteku
+			for(int i=0;i<duzina;i++)
+			{
+				String tim=timovi.get(i);
+				int pob=pobjede.get(i);
+				int por=porazi.get(i);
+				double x=postotak.get(i);
+				int pos=(int)x;
+				if(tim.length()>=23)
+					bw.write(tim+"\t"+pob+"\t\t"+por+"\t\t"+pos+" %");
+				else if(tim.length()>20)
+					bw.write(tim+"\t\t"+pob+"\t\t"+por+"\t\t"+pos+" %");
+				else if (tim.length()>15)
+					bw.write(tim+"\t\t"+pob+"\t\t"+por+"\t\t"+pos+" %");
+				else if (tim.length()>6)
+					bw.write(tim+"\t\t\t"+pob+"\t\t"+por+"\t\t"+pos+" %");
+				else
+					bw.write(tim+"\t\t\t\t"+pob+"\t\t"+por+"\t\t"+pos+" %");
+				bw.newLine();
+			}
+			
+				
+			br.close();
+			bw.close();
+			
+			
+			
+			
+		}
+		catch(IOException e)
+		{
+			System.out.println(e.toString());
+		}
+		
+		
+		
+		
+	}
+}

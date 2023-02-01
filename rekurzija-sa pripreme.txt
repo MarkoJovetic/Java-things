@@ -1,0 +1,184 @@
+/*
+ *a)Rekurzivno ispisati sve proste faktore broja n...
+ *b)Metod polovljenja intervala je metod za nalazenje nule funkcije na nekom intervalu...
+ *Neka je data funkcija f(x) i interval [a,b] i eps>0. Neka je jos f(a)*f(b)<0.
+ *Metod bira srednju tacku intervala x1=(a+b)/2.
+ *Ako je f(x1)*f(b)<0, naredni interval pretrage je [x1,b] ili je to [a,x1], i tako se nastavlja odabir naredne tacke dok f(xn)<eps.
+ *Time se xn  uzme kao priblizna nula funkcije.
+ *Konstrruisati rekurziju koja vraca pribliznu nulu  funkcije.
+ */
+ 
+ 
+import java.util.*;
+import cs1.*;
+public class zadatak5
+{
+	//funkcija f(x)=2/(3*x)+(x*4)/3
+	static double eps=0.00001;
+	static double a=-16;
+	static double b=7.5;
+	
+	
+	static double funkcija(double a, double b)
+	{
+		double f, f1, f2;
+		f1=1.0/(7.0*a)+(a*2.0)/10.0;
+		f2=1.0/(7.0*b)+(b*2.0)/10.0;
+		f=f1*f2;
+		return f;
+		
+	}
+	
+	static double nula_f(double a, double b)
+	{
+		double x=(a+b)/2;
+		if(x>eps)
+		{
+			return x;
+		}
+		else 
+		{
+			if(funkcija(x,b)<0)
+			{
+				return nula_f(x,b);
+			}
+			else if(funkcija(a,x)<0)
+			{
+			
+				return nula_f(a,x);
+			}
+			else
+			{
+				return 69.69;	
+			}
+		}
+	}
+	
+	
+	
+	static void prosti_f(int n,int a,String s)
+	{
+		if(n==1)
+		{
+			System.out.println(s);
+			
+		}
+		else
+		{
+			if(n%a==0)
+			{
+				s+=a+" ";
+				n/=a;
+				prosti_f(n,a,s);
+				
+			}
+			else
+			{
+				a++;
+				prosti_f(n,a,s);
+			}
+		}
+		
+		
+	}
+	
+	
+	
+	public static void main (String [] args)
+	{
+		if(nula_f(a,b)!=69.69)
+		{
+			System.out.println("Nula funkcije je: "+nula_f(a,b));
+		}
+		else
+		{
+			System.out.println("Nema nule funkcije");
+		}
+		
+		System.out.println("Unesite broj:");
+		int n=Keyboard.readInt();
+		System.out.print("Prosti faktori broja "+n+" su: ");
+		prosti_f(n,2,"");
+		
+		
+	}
+}
+ 
+ 
+ /***********************************************************************
+  2.verzija zadatka
+  public class zadatak1
+{
+
+	//static int a=1;
+//	static int b=2;
+	static double eps=0.000001;
+	static double f(double x)
+	{
+		double fx=Math.log10(x);
+		return fx;
+	}
+	static double metod(double a,double b)
+	{
+	//	this.a=a;
+	//	this.b=b;
+		return (a+b)/2;
+	}
+static double x=0;
+static double xn=0;
+	static double nula(double a,double b)
+	{
+		xn=metod(a,b);
+	//	if(f(a)*f(b)<0 && f(xn)>eps)
+		if(Math.abs(f(xn))>=eps){
+		
+		if(f(xn)*f(b)<0)
+		{
+			a=xn;
+			
+			nula(a,b);
+		
+		}
+		else
+		{
+		
+			b=xn;
+		
+			nula(a,b);
+		
+		}
+		}
+		x=xn;
+		/////////////////////////////////////
+	//	if(Math.abs(f(xn))<eps)
+	//		{
+	//		if(f(xn)*f(b)<0)
+	//	{
+	//		a=xn;
+	//	x=metod(a,b);
+	//	
+	//	}
+	//	else
+	//	{
+	//	
+	//		b=xn;
+	//	x=metod(a,b);
+	//	
+	//	}	
+	//		}//
+			///////////////////////////////
+		
+	return x;	
+	}
+	public static void main(String[]args)
+	{
+
+	System.out.println(nula(0.1,1.01));
+	System.out.println(f(x));
+	}
+
+    
+}
+
+*/
+

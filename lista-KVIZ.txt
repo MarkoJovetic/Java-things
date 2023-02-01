@@ -1,0 +1,181 @@
+import java.util.*;
+//KVIZ
+
+public class zadaca1_kviz
+{
+	static ArrayList<String> unos_odgovora(String [][] niz,int a)
+	{
+		ArrayList<String>A=new ArrayList<String>();
+		for(int i=0;i<niz[a].length;i++)
+		{
+			A.add(niz[a][i]);
+		}
+		return A;
+	}
+	public static void main(String[]args)
+	{
+		Scanner unos=new Scanner(System.in);
+		
+		Random rand=new Random();
+		
+		ArrayList<String> pitanja=new ArrayList<String>();
+		
+		ArrayList<String>odgovori=new ArrayList<String>();
+		
+		ArrayList<ArrayList<String>>ponudjeni_odgovori=new ArrayList<ArrayList<String>>();
+		
+		ArrayList<Integer>tacni_odgovori=new ArrayList<Integer>();
+		
+		String [] niz1={"Koliko dana ima mjesec maj?","Koja godina od ponudjenih je prestupna?","Puno ime Mozarta?",
+		"5+5","6+6","7+7","8+8","9+9","10+10","11+11","12+12","13+31","14+14","15+15","16+16",
+		"17+17","18+8","19+25","35+44","25+24"};
+		
+		String [][] niz2={{"30","31","29"},{"2014.","2015.","2016.","2017."},{"Wolfgangus Theophilus","Joannes Chrysostomus Wolfgangus",
+		"Joannes Chrysostomus Wolfgangus Theophilus"},{"2","10","0"},
+		{"12","22","32"},{"14","15","41"},{"16","26","12"},{"18","12","52"},{"20","22","24"},{"22","24","26"},
+		{"24","26","28"},{"44","33","43"},{"28","27","29"},{"30","31","32","33"},{"32","34","36","15"},{"34","35","33"},
+		{"26","36","46","16"},{"44","43","34","53"},{"79","78","87"},{"49","48","47","50"}};
+//====================================================================================================================================
+		//Unos pitanja, ponudjenih i tacnih odgovora
+		//PRVO PITANJE
+		pitanja.add(0,niz1[0]);
+		ponudjeni_odgovori.add(0,unos_odgovora(niz2,0));
+		tacni_odgovori.add(2);
+		//DRUGO PITANJE
+		pitanja.add(1,niz1[1]);
+		ponudjeni_odgovori.add(1,unos_odgovora(niz2,1));
+		tacni_odgovori.add(3);
+		//TRECE PITANJE
+		pitanja.add(2,niz1[2]);
+		ponudjeni_odgovori.add(2,unos_odgovora(niz2,2));
+		tacni_odgovori.add(3);
+		//CETVRTO PITANJE
+		pitanja.add(3,niz1[3]);
+		ponudjeni_odgovori.add(3,unos_odgovora(niz2,3));
+		tacni_odgovori.add(2);
+		//PRETO PITANJE
+		pitanja.add(4,niz1[4]);
+		ponudjeni_odgovori.add(4,unos_odgovora(niz2,4));
+		tacni_odgovori.add(1);
+		//SESTO PITANJE
+		pitanja.add(5,niz1[5]);
+		ponudjeni_odgovori.add(5,unos_odgovora(niz2,5));
+		tacni_odgovori.add(1);
+		//SEDMO PITANJE
+		pitanja.add(6,niz1[6]);
+		ponudjeni_odgovori.add(6,unos_odgovora(niz2,6));
+		tacni_odgovori.add(1);
+		//OSMO PITANJE
+		pitanja.add(7,niz1[7]);
+		ponudjeni_odgovori.add(7,unos_odgovora(niz2,7));
+		tacni_odgovori.add(1);
+		//DEVETO PITANJE
+		pitanja.add(8,niz1[8]);
+		ponudjeni_odgovori.add(8,unos_odgovora(niz2,8));
+		tacni_odgovori.add(1);
+		//DESETO PITANJE
+		pitanja.add(9,niz1[9]);
+		ponudjeni_odgovori.add(9,unos_odgovora(niz2,9));
+		tacni_odgovori.add(1);
+		//JEDANAESTO PITANJE
+		pitanja.add(10,niz1[10]);
+		ponudjeni_odgovori.add(10,unos_odgovora(niz2,10));
+		tacni_odgovori.add(1);
+		//12
+		pitanja.add(11,niz1[11]);
+		ponudjeni_odgovori.add(11,unos_odgovora(niz2,11));
+		tacni_odgovori.add(1);
+		//13
+		pitanja.add(12,niz1[12]);
+		ponudjeni_odgovori.add(12,unos_odgovora(niz2,12));
+		tacni_odgovori.add(1);
+		//14
+		pitanja.add(13,niz1[13]);
+		ponudjeni_odgovori.add(13,unos_odgovora(niz2,13));
+		tacni_odgovori.add(1);
+		//15
+		pitanja.add(14,niz1[14]);
+		ponudjeni_odgovori.add(14,unos_odgovora(niz2,14));
+		tacni_odgovori.add(1);
+		//16
+		pitanja.add(15,niz1[15]);
+		ponudjeni_odgovori.add(15,unos_odgovora(niz2,15));
+		tacni_odgovori.add(1);
+		//17
+		pitanja.add(16,niz1[16]);
+		ponudjeni_odgovori.add(16,unos_odgovora(niz2,16));
+		tacni_odgovori.add(1);
+		//18
+		pitanja.add(17,niz1[17]);
+		ponudjeni_odgovori.add(17,unos_odgovora(niz2,17));
+		tacni_odgovori.add(1);
+		//19
+		pitanja.add(18,niz1[18]);
+		ponudjeni_odgovori.add(18,unos_odgovora(niz2,18));
+		tacni_odgovori.add(1);
+		//20
+		pitanja.add(19,niz1[19]);
+		ponudjeni_odgovori.add(19,unos_odgovora(niz2,19));
+		tacni_odgovori.add(1);
+//====================================================================================================================================
+		System.out.println("KVIZ ZNANJA\nODGOVORITE NA VISE OD 70% PITANJA TACNO ZA POBJEDU!\nUNOSITE BROJ ISPRED TACNOG ODGOVORA!");
+		System.out.println("Zapocnimo:");
+		System.out.println("===================================================");
+		int br_tacnih=0;
+		int br_netacnih=0;
+		int nastavak=0;
+		int [] random_niz=new int [20];
+		for(int i=0;i<20;i++)
+		{
+			random_niz[i]=i;
+		}
+		do
+		{
+			for(int i=0;i<20;i++)
+			{
+		 		int a=rand.nextInt(20);
+				int temp=random_niz[a];
+				random_niz[a]=random_niz[i];
+				random_niz[i]=temp;
+			}
+			for(int i=0;i<20;i++)
+			{
+				int a=random_niz[i];
+				System.out.print((i+1)+".PITANJE: ");
+				
+				System.out.println(pitanja.get(a));
+				
+				for(int j=0;j<ponudjeni_odgovori.get(a).size();j++)
+				{
+					System.out.println("\t"+(j+1)+") "+ponudjeni_odgovori.get(a).get(j));
+				}
+				System.out.println("Unesite broj:");
+				int broj=unos.nextInt();
+				if(broj==tacni_odgovori.get(a))
+				{
+					br_tacnih++;
+				}
+				else
+				{
+					br_netacnih++;
+				}
+				System.out.println("===================================================");
+			}
+			System.out.println("Broj tacnih odgovora je: "+br_tacnih);
+			System.out.println("Broj netacnih odgovora je: "+br_netacnih);
+			if(br_tacnih>=14)
+				System.out.println("CESTITAMO!\nPOBIJEDILI STE!");
+			else
+				System.out.println("VISE SRECE DRUGI PUT :(");
+			System.out.println("Zelite li zapoceti novu igru!\n1 za da\n0 za ne");
+			nastavak=unos.nextInt();
+			System.out.println("===================================================");
+			
+			
+		}
+		while(nastavak==1);
+		
+		
+		
+	}
+}

@@ -1,0 +1,95 @@
+//Unose se podaci u datoteku, i ucitava se datoteka.
+//Ispisati sve rijeci sastavljene samo od malih slova i ispisati broj rijeci
+//Moze se pojaviti vise rijeci u jednom redu
+import java.io.*;
+import java.util.*;
+import cs1.*;
+public class zadatak3
+{
+	static boolean malaSlova(String s)
+	{
+		int l=s.length();
+		if(s.equals(""))
+			return false;
+		else
+		{
+		
+			int brojac=0;
+			for(int i=0;i<l;i++)
+			{
+				char a=s.charAt(i);
+				if(a>='a' && a<='z')
+				{
+					brojac++;
+				}
+						
+			}
+			if(brojac==l)
+				return true;
+			else
+				return false;
+		}
+		
+		
+	}
+	public static void main(String[]args)
+	{
+		try
+		{
+			FileReader fr=new FileReader("D:\\Toprek\\Ulazne datoteke\\tekst.txt");
+			BufferedReader br=new BufferedReader(fr);
+			String s;
+			int brojac=0;
+			while((s=br.readLine())!=null)
+			{
+			//izdvajanje rijeci iz jednog reda i spremanje u listu
+				int l=s.length();
+				String pomocni="";
+				ArrayList<String> lista=new ArrayList<String>();
+				for(int i=0;i<l;i++)
+				{
+					char a=s.charAt(i);
+					if((a>='A'&&a<='Z')||(a>='a' && a<='z') )
+					{
+						pomocni+=a;
+					}
+					else
+					{
+						lista.add(pomocni);
+						pomocni="";
+						
+					}
+				}
+				lista.add(pomocni);
+			//-------------------------------------------------
+				int print=0;
+				for(int i=0;i<lista.size();i++)
+				{
+					String a=lista.get(i);
+					
+				
+					if(malaSlova(a))
+					{
+						brojac++;
+						print++;
+						System.out.print(a+" ");
+					}
+					
+					
+				}
+				if(print!=0)   //da bi stampalo kako treba, program radi i bez ovoga
+					System.out.println();
+				
+			}
+			System.out.println("\nBroj ispisanih rijeci je: "+brojac);
+			
+			br.close();
+			
+		}
+		catch(IOException e)
+		{
+			System.out.println(e.toString());
+		
+		}
+	}
+}

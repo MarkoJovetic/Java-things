@@ -1,0 +1,327 @@
+/*
+ *U dvije liste l1 i l2 se unose brojevi koji predstavljaju permutaciju.
+ *a)U listu proizvod upisati permutacjiu koja prestavlja proizvod permutacija l1 i l2.
+ *b) U listu inverz unijeti inverznu permutaciju permutacije l1.
+ */
+ 
+ //permutacija se unosi u obliku: 1 5 3 2 4, zatim se pretvara u oblik 1 2 3 4 5
+ //																	   5 4 2 1 3
+
+import java.util.*;
+import cs1.*;
+public class zadatak1
+
+{
+	static ArrayList<Integer> mnozenje(ArrayList<Integer> l1, ArrayList<Integer> l2)
+	{
+		
+		ArrayList<Integer> permutacija1=new ArrayList<Integer>();
+		ArrayList<Integer> permutacija2=new ArrayList<Integer>();
+		ArrayList<Integer> permutacija3=new ArrayList<Integer>();
+		ArrayList<Integer> pomocni=new ArrayList<Integer>();
+		ArrayList<Integer> proizvod=new ArrayList<Integer>();
+		int a=l1.size();
+		int b=l2.size();
+		int n=Math.max(a,b);
+	
+		for(int i=1;i<=n;i++)
+		{
+			permutacija1.add(i);
+			pomocni.add(i);
+			permutacija2.add(i);
+			permutacija3.add(i);
+			proizvod.add(i);
+		}
+		
+		for(int i=0;i<n ;i++)
+		{
+			if(i==n-1)
+			{
+				int x=l1.get(0);
+				int y=l1.get(i);
+				for(int j=0;j<n;j++)
+				{
+					if(y==pomocni.get(j))
+					{
+						permutacija1.set(j,x);
+						break;
+						
+					}
+				}
+				
+				
+			}
+			else
+			{
+				int x=l1.get(i+1);
+				int y=l1.get(i);
+				for(int j=0;j<n;j++)
+				{
+					if(y==pomocni.get(j))
+					{
+						permutacija1.set(j,x);
+						break;
+						
+					}
+				}
+			}
+		}
+		for(int i=0;i<n ;i++)
+		{
+			if(i==n-1)
+			{
+				int x=l2.get(0);
+				int y=l2.get(i);
+				for(int j=0;j<n;j++)
+				{
+					if(y==pomocni.get(j))
+					{
+						permutacija2.set(j,x);
+						break;
+						
+					}
+				}
+				
+				
+			}
+			else
+			{
+				int x=l2.get(i+1);
+				int y=l2.get(i);
+				for(int j=0;j<n;j++)
+				{
+					if(y==pomocni.get(j))
+					{
+						permutacija2.set(j,x);
+						break;
+						
+					}
+				}
+			}
+		}
+		
+		for(int i=0;i<n;i++)
+		{
+			int x=permutacija1.get(i);
+			for(int j=0;j<n;j++)
+			{
+				if(x==pomocni.get(j))
+				{
+					permutacija3.set(i,permutacija2.get(j));
+					break;
+				}
+			}
+		}
+		//************************************************
+		System.out.println("Prva permutacija:");
+		for(int i=0;i<pomocni.size();i++)
+		{
+			System.out.print(pomocni.get(i)+"   ");
+		}
+		System.out.println();
+		for(int i=0;i<permutacija1.size();i++)
+		{
+			System.out.print(permutacija1.get(i)+"   ");
+		}
+		System.out.println();
+		
+		
+		
+		System.out.println("Druga permutacija:");
+		for(int i=0;i<pomocni.size();i++)
+		{
+			System.out.print(pomocni.get(i)+"   ");
+		}
+		System.out.println();
+		for(int i=0;i<permutacija2.size();i++)
+		{
+			System.out.print(permutacija2.get(i)+"   ");
+		}
+		System.out.println();
+		//***************************************************
+		/*
+		proizvod.set(0,pomocni.get(0));
+		proizvod.set(1,permutacija3.get(0));
+		int y=permutacija3.get(0);
+		for(int i=2;i<n;i++)
+		{
+			int x=pomocni.get(i);
+			
+			for(int j=0;j<n;j++)
+			{
+				if(y==pomocni.get(j))
+				{
+					proizvod.set(i,permutacija3.get(j));
+					y=permutacija3.get(j);
+					break;
+				}
+			}
+			
+		}
+		
+		*/
+		
+		return permutacija3;
+		
+			
+			
+			
+		
+		
+	}
+	static ArrayList<Integer> invertiranje(ArrayList<Integer> l1)
+	{
+		ArrayList<Integer> inv=new ArrayList<Integer>();
+		ArrayList<Integer> pom=new ArrayList<Integer>();
+		ArrayList<Integer> inverzni=new ArrayList<Integer>();
+		ArrayList<Integer> finalni=new ArrayList<Integer>();
+		int n=l1.size();
+		for(int i=1;i<=n;i++)
+		{
+			inv.add(i);
+			pom.add(i);
+			inverzni.add(i);
+			finalni.add(i);
+		}
+		for(int i=0;i<n;i++)
+		{
+			if(i==n-1)
+			{
+				int x=l1.get(0);
+				int y=l1.get(i);
+				for(int j=0;j<n;j++)
+				{
+					if(y==pom.get(j))
+					{
+						inv.set(j,x);
+						break;
+						
+					}
+				}
+				
+				
+			}
+			else
+			{
+				int x=l1.get(i+1);
+				int y=l1.get(i);
+				for(int j=0;j<n;j++)
+				{
+					if(y==pom.get(j))
+					{
+						inv.set(j,x);
+						break;
+						
+					}
+				}
+			}
+		}
+		for(int i=0;i<n;i++)
+		{
+			int x=inv.get(i);
+			int y=pom.get(i);
+			inverzni.set(x-1,y);
+			
+		}
+		
+		
+		/*
+		finalni.set(0,pom.get(0));
+		finalni.set(1,inverzni.get(0));
+		int y=inverzni.get(0);
+		for(int i=2;i<n;i++)
+		{
+			int x=pom.get(i);
+			
+			for(int j=0;j<n;j++)
+			{
+				if(y==pom.get(j))
+				{
+					finalni.set(i,inverzni.get(j));
+					y=inverzni.get(j);
+					break;
+				}
+			}
+			
+		}
+		
+		*/
+		
+		return inverzni;
+		
+			
+		
+		
+		
+	}
+	
+	
+	public static void main(String[]args)
+	{
+		ArrayList<Integer> lista1=new ArrayList<Integer>();
+		ArrayList<Integer> lista2=new ArrayList<Integer>();
+		ArrayList<Integer> proizvod=new ArrayList<Integer>();
+		ArrayList<Integer> inverz=new ArrayList<Integer>();
+		ArrayList<Integer> pomocni=new ArrayList<Integer>();
+		
+		
+		
+		printf("Unesite duzinu permutacije:");
+		int n=Keyboard.readInt();
+		
+		for(int i=1;i<=n;i++)
+		{
+			pomocni.add(i);
+		}
+		
+		printf("Unesite elemente prve permutacije:");
+		for(int i=0;i<n;i++)
+		{
+			int x=Keyboard.readInt();
+			lista1.add(x);
+		}
+		printf("Unesite elemente druge permutacije:");
+		for(int i=0;i<n;i++)
+		{
+			int x=Keyboard.readInt();
+			lista2.add(x);
+		}
+		
+		proizvod=mnozenje(lista1,lista2);
+		inverz=invertiranje(lista1);
+		printf("Inverzna permutacije, prve permutacije:");
+		for(int i=0;i<n;i++)
+		{
+			print(pomocni.get(i)+"   ");
+		}
+		printf("");
+		for(int i=0; i<n;i++)
+		{
+			print(inverz.get(i)+"   ");
+		}
+		printf("");
+		printf("Proizvod permutacija:");
+		for(int i=0;i<n;i++)
+		{
+			print(pomocni.get(i)+"   ");
+		}
+		printf("");
+		for(int i=0; i<n;i++)
+		{
+			print(proizvod.get(i)+"   ");
+		}
+		printf("");
+		
+		
+		
+		
+	}
+	static void print(Object o)
+	{
+		System.out.print(o);
+	}
+	static void printf(Object o)
+	{
+		System.out.println(o);
+	}
+}

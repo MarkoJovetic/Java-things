@@ -1,0 +1,247 @@
+/*niz novcanice (navesti sve novcancice koje postoje u bankomatu)
+ *niz kolicina (koliko kojih novcanica ima u bankomatu)
+ *za uneseni broj, na koliko nacina se moze izvrsiti dekompozicija datog iznosa:
+ *za 30 je 10, 10, 10; 10, 20;
+ *za 40 je 10,10,10,10; 10,10,20; 20,20;
+ *na sve nacine kako se mogu dici pare!!
+ **/
+ import cs1.*;
+ import java.util.*;
+ public class zadaca2
+ {
+ 	static void toInt(String s, ArrayList<ArrayList<Integer>> list )
+ 	{
+ 		ArrayList<Integer> pomocna=new ArrayList<Integer>();
+ 		int n=s.length();
+ 		String a="";
+ 		for(int i=0;i<n;i++)
+ 		{
+ 			int sh=(int)(s.charAt(i));
+ 			if(sh>=48 && sh <=57)
+ 			{
+ 				a+=s.charAt(i);
+ 				
+ 			}
+ 			else
+ 			{
+ 				
+ 				int k=Integer.parseInt(a);
+ 				pomocna.add(k);
+ 				a="";
+ 				
+ 				
+ 			}
+ 		}
+ 		list.add(pomocna);
+ 	}
+ 	
+ 	
+ 	static void moguci_nacini(int n, int max,String s, ArrayList<String> lista )
+	{
+		if(n==0)
+			lista.add(s);
+		else
+		{
+			
+				for(int i=Math.min(max, n);i>0;i-=max)
+				{
+					moguci_nacini(n-i,i,s+i+" ",lista);
+		
+				}
+			
+				
+			
+		}
+	}
+ 	
+ 	
+ 	public static void main(String [] args)
+ 	{
+ 		int bankomat []={10,20,50,100};				//raspolozive novanice u bankomatu
+ 		int broj_novcanica[]={2,50,100,20};			//broj svake novcanice u bankomatu
+ 		int stanje_racuna []={256,345,252,1025,500,400};	//stanje racuna korisnika koji je odredjen pin kodom
+ 		int pin_kod []={1234,2345,3456,4567,5678,6789};
+ 		ArrayList<String> nacini=new ArrayList<String>();
+ 		ArrayList<ArrayList<Integer>> naciniInt=new ArrayList<ArrayList<Integer>>();
+ 		
+ 		
+ 		//************************************************
+ 		print("Unesite pin kod");
+ 		int pin=Keyboard.readInt();
+ 		int brojac=0;
+ 		int pin_pozicija=0;
+ 		while(brojac==0)
+ 		{
+ 			
+ 			for(int i=0;i<pin_kod.length;i++)
+ 			{
+ 				if (pin==pin_kod[i])
+ 				{
+ 					brojac++;
+ 					pin_pozicija=i;			//unos pin koda
+ 					
+ 				}
+ 			}
+ 			if(brojac==0)
+ 			{
+ 				print("Pogresan pin kod. Unesite ponovo");
+ 				pin=Keyboard.readInt();
+ 			}
+ 			
+ 		
+ 		}
+ 		//*****************************************************
+ 		
+ 		print("Unesite koliko zelite podici novca");
+ 		int unos=Keyboard.readInt();
+ 		brojac=0;
+ 		while(brojac==0)
+ 		{
+ 		
+ 			while(unos%10 != 0)
+ 			{
+ 				print("Nije moguce podici taj iznos. Pokusajte ponovo");			
+ 				
+ 				unos=Keyboard.readInt();
+ 				brojac=0;
+ 						
+ 			}
+ 			brojac++;																				//unos odgovarajuce kolicine novca
+ 			
+ 			//**************************************************************
+ 			while(unos>stanje_racuna[pin_pozicija])
+ 			{
+ 				print("Nemate dovoljno novca na racunu. Pokusajte ponovo");
+ 				unos=Keyboard.readInt();
+ 				brojac=0;
+ 			}
+ 			
+ 			
+ 			//*************************************************************
+ 		}
+ 		for(int i=0;i<bankomat.length;i++)
+ 		{
+ 				
+ 				if(bankomat[i]<=unos)
+ 				{
+ 				
+ 					moguci_nacini(unos,bankomat[i],"",nacini);
+ 				}
+ 		
+ 		}
+ 	//rekurzijom se vrsi dekompozicija unijetog novca
+	//i vraca se u listi koja se potom pretvara u 
+	//podlistu listi cijelih brojeva
+
+ 		for(int i=0;i<nacini.size();i++)		
+ 		{
+ 			String s = nacini.get(i);
+ 			toInt(s,naciniInt);
+ 		}
+ 		
+ 		/*for(int i=0;i<naciniInt.size();i++)
+ 		{
+ 			for(int j=0;j<naciniInt.get(i).size();j++)
+ 			{
+ 				System.out.print(naciniInt.get(i).get(j)+" ");
+ 			}
+ 			print("");
+ 		}*/
+ 		
+ 		
+ 		//****************************************************************
+ 		
+ 		brojac=0;
+ 		int zeljeni_nacin;
+ 		int pozicija=0;
+ 		zeljeni_nacin=nacin(naciniInt);
+ 		int prethodno_stanje=0;
+ 		
+ 		
+ 		for(int i=zeljeni_nacin, j=0;j<naciniInt.get(i).size();j++)
+ 		{
+ 			int x=naciniInt.get(i).get(j);
+ 			
+ 			for(int k=0;k<bankomat.length;k++)
+ 			{
+ 				if(x==bankomat[k])											 //provjerava da li u bankomatu ima dovoljno novcanica
+ 				{														    //kada korisnik obare nacin na koji zeli podici novac
+ 					pozicija=k;											   //i smanjuje stanje novcanica pri podizanju
+ 					break;
+ 				}
+ 			}
+ 			
+ 			
+ 			if(j==0)
+ 			{
+ 				prethodno_stanje=broj_novcanica[pozicija];
+ 			}
+ 			
+ 			
+ 			if(broj_novcanica[pozicija]==0)
+ 			{
+ 				
+ 				broj_novcanica[pozicija]=prethodno_stanje;
+ 				print("U bankomatu nema dovoljno novcanica od "+x+" KM. Izaberite drugi nacin");
+ 				zeljeni_nacin=nacin(naciniInt);
+ 				i=zeljeni_nacin;
+ 				j=0;
+ 				
+ 				
+ 			}
+ 			else
+ 			{
+ 				broj_novcanica[pozicija]--;
+ 			
+ 				
+ 			}
+ 			
+ 		}
+ 		print("puf");
+ 				
+ 			
+ 			
+ 	
+ 		
+ 		
+ 		
+ 		//****************************************************************
+ 		
+ 		stanje_racuna[pin_pozicija]-=unos;
+ 		print("Stanje na racunu: "+stanje_racuna[pin_pozicija]);
+ 		
+ 		
+ 		
+ 		//*****************************************************************
+ 		
+ 		
+ 		
+ 		
+ 	}
+ 	
+ 	
+ 	/******************************************************************************/
+ 	static void print(Object s)
+	{
+		System.out.println(s);
+	}
+	static int nacin(ArrayList<ArrayList<Integer>> naciniInt)
+	{
+		int zeljeni_nacin;
+		print("Izaberine nacin na koji zelite podici novac");
+ 			for(int i=0;i<naciniInt.size();i++)
+ 			{
+ 				System.out.print(i+1+") ");
+ 				for(int j=0;j<naciniInt.get(i).size();j++)
+ 				{
+ 					System.out.print(naciniInt.get(i).get(j)+" ");
+ 				}
+ 				print("");
+ 				
+ 			}
+ 			zeljeni_nacin=Keyboard.readInt();
+ 			zeljeni_nacin--;
+ 			return zeljeni_nacin;
+ 		
+	}
+ }

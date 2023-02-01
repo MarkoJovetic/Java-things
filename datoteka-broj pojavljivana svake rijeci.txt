@@ -1,0 +1,106 @@
+/*
+ *U datoteku se unose recenice u svakom redu po jedna.
+ *U izlaznu datoteku ispisati izvjestaj o broju pojavljivanja svake rijecu.
+ *Format ispisa u svakom redu :
+ *rijec1- br_pojavljivanja;
+ *rijec2- br_pojavljivanja;
+ */
+ 
+ 
+import java.io.*;
+import java.util.*;
+import cs1.*;
+public class zadatak3
+{
+	static void toWord(ArrayList<String> lista, String s)
+	{
+		int n=s.length();
+		String a="";
+		for(int i=0;i<n;i++)
+		{
+			char c=s.charAt(i);
+			if( (c>='a' && c<='z') ||(c>='A' && c<='Z')||(c>='0' && c<='9'))
+			{
+				a+=c;
+			}
+			else
+			{
+				if(a.length()!=0)
+				{
+					a.trim();
+					lista.add(a);
+				}
+				
+				a="";
+			}
+		}
+	}
+	public static void main(String [] args)
+	{
+		try
+		{
+			FileReader fr=new FileReader("D:\\Toprek\\Ulazne datoteke\\recenice_zad3.txt");
+			BufferedReader br=new BufferedReader (fr);
+			FileWriter fw = new FileWriter ("D:\\Toprek\\Izlazne datoteke\\zadatak3_izlazna.txt");
+			BufferedWriter bw=new BufferedWriter (fw);
+			ArrayList<String> rijeci=new ArrayList<String>();
+			ArrayList<String> lista_rijeci=new ArrayList<String>();
+			ArrayList<Integer> broj_ponavljanja=new ArrayList<Integer>();
+			
+			
+			String s;
+			while((s=br.readLine())!=null)
+			{
+				toWord(rijeci,s);
+			}
+			int brojac=1;
+			for(int i=0;i<rijeci.size();i++)
+			{
+				String a=rijeci.get(i);
+				lista_rijeci.add(a);
+				
+				for(int j=i+1;j<rijeci.size();j++)
+				{
+					String b=rijeci.get(j);
+					if(a.equals(b))
+					{
+						brojac++;
+						rijeci.remove(j);
+						j--;	
+					}
+				}
+				broj_ponavljanja.add(brojac);
+				brojac=1;
+			}
+			for(int i=0;i<lista_rijeci.size();i++)
+			{
+				String s1=lista_rijeci.get(i);
+				int i1=broj_ponavljanja.get(i);
+				bw.write(s1+" "+i1);
+				bw.newLine();
+			}
+			bw.close();
+			br.close();
+			
+			
+		}
+		catch(IOException e)
+		{
+			System.out.println(e.toString());
+		}
+	}
+	static void ispisS(ArrayList<String> lista)
+	{
+		for(int i=0;i<lista.size();i++)
+			{
+				System.out.println(lista.get(i));
+			}
+	}
+	static void ispisI(ArrayList<Integer> lista)
+	{
+		for(int i=0;i<lista.size();i++)
+			{
+				System.out.println(lista.get(i)+" ");
+			}
+	}
+}

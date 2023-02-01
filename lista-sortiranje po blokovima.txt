@@ -1,0 +1,110 @@
+/*zadaje se broj k i broj n i lista duzine n*k. sortirati listu tako da elementi budu sortiranji u blokovima duzine k,
+ *naizmjenicno u rastucem i opadajucem poretku*/
+ 
+ import java.util.*;
+ import cs1.*;
+ public class zadaca1
+ {
+ 	static void sortUp (ArrayList<Integer> lista, int n, int a)
+ 	{
+ 		for(int i=a;i<n;i++)
+ 		{
+ 			for(int j=i+1;j<n;j++)
+ 			{
+ 				if(lista.get(i)<lista.get(j))
+ 				{
+ 					int x=lista.get(i);
+ 					lista.set(i,lista.get(j));
+ 					lista.set(j,x);
+ 					
+ 				}
+ 			}
+ 		}
+ 		
+ 	}
+ 	static void sortDown (ArrayList<Integer> lista, int n, int a)
+ 	{
+ 		for(int i=a;i<n;i++)
+ 		{
+ 			for(int j=i+1;j<n;j++)
+ 			{
+ 				if(lista.get(i)>lista.get(j))
+ 				{
+ 					int x=lista.get(i);
+ 					lista.set(i,lista.get(j));
+ 					lista.set(j,x);
+ 					
+ 				}
+ 			}
+ 		}
+ 		
+ 	}
+ 	
+ 	public static void main(String[]args)
+ 	{
+ 		System.out.println("Unesite broj k");
+ 		int k=Keyboard.readInt();
+ 		System.out.println("Unesite broj n");
+ 		int n=Keyboard.readInt();
+ 		int l=n*k;
+ 		ArrayList <Integer> lista=new ArrayList <Integer> ();
+ 		Random rand=new Random ();
+ 		
+ 		for(int i=0;i<l;i++)
+ 		{
+ 			int a=rand.nextInt(30);
+ 			lista.add(a);
+ 		}
+ 		
+ 		for(int i=0;i<n;i++)
+ 		{
+ 			int a=k*i;
+ 			int d=k*i+k;
+ 			if(i%2==0)
+ 			{
+ 				
+ 				
+ 				for(int x=a;x<d;x++)
+				for(int y=x+1;y<d;y++)
+				if(lista.get(x)>lista.get(y))
+				{
+					int br=lista.get(x);
+					lista.set(x,lista.get(y));
+					lista.set(y,br);
+					
+				}
+ 				
+ 				
+ 			}
+ 			else
+ 			{
+ 				
+ 				
+ 				for(int x=a;x<d;x++)
+				for(int y=x+1;y<d;y++)
+				if(lista.get(x)<lista.get(y))
+				{
+					int br=lista.get(x);
+					lista.set(x,lista.get(y));
+					lista.set(y,br);
+				}
+ 				
+ 				
+ 			}
+ 				
+ 				
+ 		}
+ 		int brojac=0;
+ 		for(int p=0;p<lista.size();p++)
+ 		{
+ 			int br=lista.get(p);
+ 			if(brojac%k==0)
+ 			System.out.print("| ");
+ 			System.out.print(br+" ");
+ 			brojac++;
+ 		}
+ 		
+ 		
+ 		
+ 	}
+ }

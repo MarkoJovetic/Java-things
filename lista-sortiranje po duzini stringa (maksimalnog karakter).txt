@@ -1,0 +1,79 @@
+import java.util.*;
+//sortiranje stringova po duzini, ako je duzina jednaka, po maksimalnom karaketu
+public class zadatak2
+{
+	static int maksimalniBroj(String a)
+	{
+		if(a.length()==1)
+		return a.charAt(0);
+		else
+		{
+		
+		int x=0;
+		int k=0;
+		int p=0;
+		for(int i=1;i<a.length();i++)
+		{
+			if(a.charAt(k)<a.charAt(i))
+			{
+				x+=(int)a.charAt(i);
+				k=i;
+				p=x;
+				x=0;
+				
+			}
+			
+				
+		}
+		return p;
+		}
+	}
+	static void bsort(Vector<String>vektor)
+	{
+		int k=vektor.size();
+		for(int i=0;i<k;i++)
+		{
+			for(int j=k-1;j>i;j--)
+			{
+				String a1=vektor.elementAt(i);
+				String a2=vektor.elementAt(j);
+				if(a1.length()<a2.length())
+				{
+					String pom=a2;
+					vektor.setElementAt(a1,j);
+					vektor.setElementAt(pom,i);
+				}
+				else if(a1.length()==a2.length())
+				{
+					int b1=maksimalniBroj(a1);
+					int b2=maksimalniBroj(a2);
+					if(b1<b2)
+					{
+						String pom=a2;
+						vektor.setElementAt(a1,j);
+						vektor.setElementAt(pom,i);
+					}
+				}
+			}
+		}
+	}
+	public static void main(String[]args)
+	{
+		Scanner str=new Scanner(System.in);
+		
+		Vector <String> vektor=new Vector<String>(5);
+		for(int i=0;i<5;i++)
+		{
+			String a=str.nextLine();
+			vektor.addElement(a);
+		}
+		
+		
+		bsort(vektor);
+		for(int i=0;i<vektor.size();i++)
+		{
+			System.out.print(vektor.elementAt(i)+"\t");
+		}
+		
+	}
+}

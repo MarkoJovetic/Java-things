@@ -1,0 +1,73 @@
+import java.util.*;
+import java.io.*;
+//unose se rijeci iz datoteke koje su poredane jedne ispod druge
+//u izlaznoj datoteci se ispisuju parovi rijeci koji imaju identican broj samoglasnika i suglasnika, bez ponavljanja parova
+public class zadatak3
+{
+	static int br_samoglasnika(String s)
+	{
+		int k=s.length();
+		int brojac=0;
+		for(int i=0;i<k;i++)
+		{
+			if(s.charAt(i)=='a' || s.charAt(i)=='e' || s.charAt(i)=='i'|| s.charAt(i)=='o'|| s.charAt(i)=='u')
+			{
+				brojac++;
+			}
+		}
+		return brojac;
+	}
+	static int br_suglasnika(String s)
+	{
+		int k=s.length();
+		int duzina=k-br_samoglasnika(s);
+		return duzina;
+	}
+	public static void main(String[]args)
+	{
+		
+		try
+		{
+			FileReader fr=new FileReader("D:\\Toprek\\Ulazne datoteke\\ulazna1.txt");
+			BufferedReader br=new BufferedReader(fr);
+			FileWriter fw=new FileWriter("D:\\Toprek\\Izlazne datoteke\\izlazna2.txt");
+			BufferedWriter bw=new BufferedWriter(fw);
+			Scanner scan=new Scanner(System.in);
+			String s="";
+			ArrayList<String> lista=new ArrayList<String>();
+			while((s=br.readLine())!=null)
+			{
+				lista.add(s);
+				
+			}
+			for(int i=0;i<lista.size()-1;i++)
+			{
+				String a=lista.get(i);
+				int a1=br_suglasnika(a);
+				int a2=br_samoglasnika(a);
+				for(int j=i+1;j<lista.size();j++)
+				{
+					String b=lista.get(j);
+					int b1=br_suglasnika(b);
+					int b2=br_samoglasnika(b);
+					
+					if((a1==b1)&&(a2==b2))
+					{
+						bw.write("("+a+", "+b+")");
+						bw.newLine();
+					} 
+					
+				}
+			}
+			
+			
+			bw.close();
+			br.close();
+			
+		}
+		catch(IOException e)
+		{
+			System.out.println(e.toString());
+		}
+	}
+}

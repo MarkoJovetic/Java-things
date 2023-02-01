@@ -1,0 +1,102 @@
+/*n, predstavlja skup brojeva 1, 2 do n
+ *napraviti rekurziju koja ispisuje sve podsupove skupa n
+ *2^n - 1
+ *1,2,3...n
+ *12, 13, 1n
+ */
+ import java.util.*;
+ import cs1.*;
+public class zadaca1
+{
+	
+	static ArrayList<List<Integer>> podskup (int [] niz)
+    {
+    	ArrayList<List<Integer>> pod=new ArrayList<List<Integer>>();
+    	
+    	if(niz.length == 0)
+    	{
+    		pod.add(new ArrayList<Integer>());
+    		return pod;
+    	}
+    	else
+    	{
+    		sort(niz);
+    		int pivot = niz[0];
+    		int ostatak []=new int [niz.length-1];
+    		niz_copy(niz,ostatak);
+    		for(List<Integer> lista : podskup(ostatak))
+    		{
+    			List<Integer> novaLista= new LinkedList<Integer>();
+    			novaLista.add(pivot);
+    			novaLista.addAll(lista);
+    			pod.add(lista);
+    			pod.add(novaLista);
+    		}
+    		return pod;
+    		
+    		
+    	}
+    	
+    }
+    static void sort(int niz [])
+    {
+    	int n=niz.length;
+    	for(int i=0;i<n-1;i++)
+    	{
+    		for(int j=i+1;j<n;j++)
+    		{
+    			if(niz[i]>niz[j])
+    			{
+    				int x=niz[i];
+    				niz[i]=niz[j];
+    				niz[j]=x;
+    			}
+    				
+    		}
+    	}
+    }
+    static void niz_copy(int original [], int kopija [])
+    {
+    	int j=1;
+    	int n=original.length-1;
+    	for(int i=0;i<n;i++)
+    	{
+    		kopija[i]=original[j];
+    		j++;
+    	}
+    }
+	
+	
+	
+	
+	public static void main(String[]args)
+	{
+		print("Unesite broj elemenata skupa:");
+		int n=Keyboard.readInt();
+		int skup []=new int [n];
+		for(int i=0;i<n;i++)
+		{
+			skup[i]=i+1;
+		}
+		ArrayList<List<Integer>> pod_skup=new ArrayList<List<Integer>>();
+		pod_skup=podskup(skup);
+		list_print(pod_skup);
+		
+	}
+	static void list_print(ArrayList<List<Integer>> list)
+	{
+		for(int i=0;i<list.size();i++)
+		{
+			for(int j=0;j<list.get(i).size();j++)
+			{
+				System.out.print(list.get(i).get(j));
+			}
+			print("");
+		}
+	}
+
+	static void print(Object o)
+	{
+		System.out.println(o);
+	}
+}

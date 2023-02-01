@@ -1,0 +1,152 @@
+/*
+ *U vektor se unose nizovi brojeva.
+ *Jedan niz je kompatibilan sa drugim ako je vise od pola brojeva jednog niza djeljivo sa nekim brojem drugog niza.
+ *Za svaki od takvih nizova ispitati koliki je procenat brojeva koji su prosti...
+ */
+import java.util.*;
+import cs1.*;
+public class zadatak2
+{
+	static boolean kompatibilan(Integer niz1 [], Integer niz2 [])
+	{
+		int n=niz1.length;
+		int m=niz2.length;
+		int x, y, djeljiv1=0;
+		int d1=0;
+		for(int i=0;i<m;i++)
+		{
+			y=niz2[i];
+			for(int j=0;j<n;j++)
+			{
+				x=niz1[j];
+				if(x%y==0)
+				{
+					djeljiv1++;
+				}
+				
+			}
+			if(djeljiv1>n/2)
+			{
+				d1++;
+			//	break;
+				djeljiv1=0;
+			}
+			else
+			{
+				djeljiv1=0;
+			}
+		}
+		if(d1>m/2)
+		{
+			return true;
+		}
+		else
+			return false;
+		
+		
+	}
+	
+	static double procenat(Integer niz [])
+	{
+		int n=niz.length;
+		double br=0;
+		for(int i=0;i<n;i++)
+		{
+			if(prost(niz[i]))
+			{
+				br++;
+			}
+		}
+		return (br/n)*100;
+			
+		
+	}
+	static boolean prost(int n)
+	{
+		if(n==1 || n==2)
+		{
+			return true;
+		}
+		else
+		{
+			int br=0;
+			for(int i=2;i<n;i++)
+			{
+				if(n%i==0)
+				{
+					br++;
+				}
+					
+			}
+			if(br==0)
+				return true;
+			else 
+				return false;
+		}
+	}
+	
+	public static void main(String [] args)
+	{
+		Vector<Integer []> vektor=new Vector<Integer []>();
+		Vector<Integer []> kompatibilni=new Vector<Integer []>();
+		printf("Koliko nizova zelite unijeti?");
+		int n=Keyboard.readInt();
+		for(int i=0;i<n;i++)
+		{
+			printf("Unesite duzinu "+(i+1)+". niza:");
+			int m=Keyboard.readInt();
+			Integer niz[]=new Integer [m];
+			printf("Unesite elemente tog niza:");
+			for(int j=0;j<m;j++)
+			{
+				niz[j]=Keyboard.readInt();
+			}
+			vektor.addElement(niz);
+		}
+		for(int i=0;i<vektor.size();i++)
+		{
+			Integer x [] = vektor.get(i);
+			for(int j=0;j<vektor.size();j++)
+			{
+				Integer y[]=vektor.get(j);
+				if(i!=j)
+				{
+					if(kompatibilan(x,y));
+					{
+						kompatibilni.addElement(x);
+					}
+					
+				}
+			}
+			
+		}
+		for(int i=0;i<kompatibilni.size();i++)
+		{
+			Integer [] x=kompatibilni.get(i);
+			print((i+1)+". niz: ");
+			for(int j=0;j<x.length;j++)
+			{
+				print (x[j]+" ");
+			}
+			printf("");
+		}
+		
+		for(int i=0;i<kompatibilni.size();i++)
+		{
+			Integer x []=kompatibilni.get(i);
+			printf("Postotak prostih brojeva "+(i+1)+" niza je: "+procenat(x)+"%");
+		}
+		
+		
+		
+		
+	}
+	static void print(Object o)
+	{
+		System.out.print(o);
+	}
+	static void printf(Object o)
+	{
+		System.out.println(o);
+	}
+}

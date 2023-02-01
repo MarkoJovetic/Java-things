@@ -1,0 +1,488 @@
+/*
+ *U datoteku se unose rezultati teniskih meceva(pretpostaviti da su validni)...Pr.
+ *Teniser1: Teniser2-7:6 3:6 2:6
+ *Teniser1: Teniser3-2:6 3:6
+ *Teniser2:Teniser3- 6:4 7:6
+ *U izlaznu datoteku napraviti rang listu tenisera(rang lista se pravi po omjeru pobjeda i poraza)...
+ *Primjer izlazne datoteke:
+ *Teniser1 2-1
+ *Teniser2 2-1
+ *Teniser3 1-2
+ *Teniser4 1-2
+ */
+
+
+import java.io.*;
+import java.util.*;
+public class zadatak4
+{
+	static void zaTim1(ArrayList<String> tim, String s)
+	{
+		String a="";
+		int n=s.length();
+		for(int i=0;i<n;i++)
+		{
+			if(s.charAt(i)!=':')
+			{
+				a+=s.charAt(i);
+			}
+			else
+				break;
+		}
+		tim.add(a);
+	}
+	static void zaTim2(ArrayList<String> tim, String s)
+	{
+		String a="";
+		int n=s.length();
+		int m=0;
+		
+		for(int i=0;i<n;i++)
+		{
+			if(s.charAt(i)==' ')
+			{
+				m=i+1;
+				break;
+				
+				
+			}	
+		}
+		for(int i=m;i<n;i++)
+		{
+			if(s.charAt(i)!='-')
+			{
+				a+=s.charAt(i);
+			}
+			else
+				break;
+		}
+		tim.add(a);
+		
+		
+	}
+	static void rezultat(ArrayList<Integer> rez1, ArrayList<Integer> rez2, String s)
+	{
+		ArrayList<Integer> pom1=new ArrayList<Integer>();
+		ArrayList<Integer> pom2=new ArrayList<Integer>();
+		int n=s.length();
+		String a="";
+		int i=0;
+		while(s.charAt(i)!='-')
+		{
+			i++;
+		}
+		int m=i+1;
+		for(i=m;i<n;i++)
+		{
+			a+=s.charAt(i);
+			
+			int r1=Integer.parseInt(a);
+			pom1.add(r1);
+			a="";i+=2;
+			
+			a+=s.charAt(i);
+			i++;
+			int r2=Integer.parseInt(a);
+			pom2.add(r2);
+			a="";
+			
+			
+		}
+		int r1=0;
+		int r2=0;
+		for(i=0;i<pom1.size();i++)
+		{
+			if(pom1.get(i)>pom2.get(i))
+			{
+				r1++;
+			}
+			else
+			{
+				r2++;
+			}
+		}
+		if(r1>r2)
+		{
+			rez1.add(1);
+			rez2.add(0);
+		}
+		else
+		{
+			rez1.add(0);
+			rez2.add(1);
+		}
+		
+	}
+	public static void main(String [] args)
+	{
+		try
+		{
+			FileReader fr=new FileReader ("D:\\Toprek\\Ulazne datoteke\\zadatak4_priprema_tenis.txt");
+			BufferedReader br=new BufferedReader (fr);
+			FileWriter fw=new FileWriter("D:\\Toprek\\Izlazne datoteke\\zadatak4_tenis_results.txt");
+			BufferedWriter bw=new BufferedWriter(fw);
+			ArrayList<String> tim1=new ArrayList<String>();
+			ArrayList<String> tim2=new ArrayList<String>();
+			ArrayList<Integer> rez1=new ArrayList<Integer>();
+			ArrayList<Integer> rez2=new ArrayList<Integer>();
+			
+			ArrayList<String> tabela_tim=new ArrayList<String>();
+			ArrayList<Integer> br_pob=new ArrayList<Integer>();
+			ArrayList<Integer> br_por=new ArrayList<Integer>();
+			
+			
+			String s;
+			while((s=br.readLine())!=null)
+			{
+				zaTim1(tim1,s);
+				zaTim2(tim2,s);
+				rezultat(rez1,rez2,s);
+			}
+/*
+for(int i=0;i<tim1.size();i++)
+{
+	System.out.println(tim1.get(i)+"  "+tim2.get(i));
+}
+for(int i=0;i<rez1.size();i++)
+{
+	
+	System.out.print(rez1.get(i)+" ");
+			
+	System.out.println();
+	
+	System.out.print(rez2.get(i)+" ");
+	
+	System.out.println();
+}
+*/
+
+			for(int i=0;i<tim1.size();i++)
+			{
+				String a=tim1.get(i);
+				String b=tim2.get(i);
+				if(!(tabela_tim.contains(a)))
+				{
+					tabela_tim.add(a);
+				}
+				if(!(tabela_tim.contains(b)))
+				{
+					tabela_tim.add(b);
+				}
+			}
+			
+			for(int i=0;i<tabela_tim.size();i++)
+			{
+				br_pob.add(0);
+				br_por.add(0);
+			}
+			
+			for(int i=0;i<tim1.size();i++)
+			{
+				String a=tim1.get(i);
+				String b=tim2.get(i);
+				int r1=rez1.get(i);
+				if(r1==1)
+				{
+					int index=tabela_tim.indexOf(a);
+					int pobjede=br_pob.get(index);
+					pobjede++;
+					br_pob.set(index,pobjede);
+					index=tabela_tim.indexOf(b);
+					int porazi=br_por.get(index);
+					porazi++;
+					br_por.set(index,porazi);
+				}
+				else
+				{
+					int index=tabela_tim.indexOf(b);
+					int pobjede=br_pob.get(index);
+					pobjede++;
+					br_pob.set(index,pobjede);
+					index=tabela_tim.indexOf(a);
+					int porazi=br_por.get(index);
+					porazi++;
+					br_por.set(index,porazi);
+				}
+			}
+			
+			int n=br_pob.size();
+			double procenat[]=new double [n];
+			for(int i=0;i<n;i++)
+			{
+				double a=br_pob.get(i);
+				double b=br_por.get(i);
+				procenat[i]=(a/(a+b))*100;
+			}
+			
+			for(int i=0;i<n-1;i++)
+			{
+				for(int j=i+1;j<n;j++)
+				{
+					if(procenat[i]<procenat[j])
+					{
+						double x=procenat[i];
+						procenat[i]=procenat[j];
+						procenat[j]=x;
+						String a=tabela_tim.get(i);
+						tabela_tim.set(i,tabela_tim.get(j));
+						tabela_tim.set(j,a);
+						
+						int b=br_pob.get(i);
+						br_pob.set(i,br_pob.get(j));
+						br_pob.set(j,b);
+						int c=br_por.get(i);
+						br_por.set(i,br_por.get(j));
+						br_por.set(j,c);
+					}
+				}
+			}
+			
+			for(int i=0;i<n;i++)
+			{
+				bw.write(tabela_tim.get(i)+" "+br_pob.get(i)+"-"+br_por.get(i));
+				bw.newLine();
+			}
+			
+			
+			bw.close();
+			br.close();
+			
+			
+			
+		}
+		catch (IOException e)
+		{
+			System.out.println(e.toString());
+		}
+	}
+}
+
+
+
+
+/* NEKA DJOLETOVA VERZIJA NEKOG ZADATKA, KOJA U KONZOLI ISPISUJE REZULTATE NEKE
+import javax.swing.*;
+import java.awt.*;
+import java.util.*;
+import java.io.*;
+public class zadatak4 extends JFrame
+{
+	static String tim1(String s)
+	{
+		String q="";
+		int a=0;
+		for(int i=0;i<s.length();i++)
+		{if(s.charAt(i)==':')
+		{a=i;
+			break;}
+		}
+		q=s.substring(0,a);
+		return q;
+	}
+	//////////////////////////////////////////////
+	static String tim2(String s)
+	{
+		String q="";
+		int a=-1,b=-1;
+		int i=0;
+		while(a<0||b<0)
+		{if(s.charAt(i)==':')
+		a=i;
+		if(s.charAt(i)=='_')
+		b=i;
+			i++;	
+		}
+		q=s.substring(a+1,b);
+		return q;
+	}
+	//////////////////////////////////////////////
+		static int rez2(String s)
+	{
+		String q="";
+		int a=-1;
+		int i=s.length()-1;
+		while(a<0)
+		{if(s.charAt(i)==':')
+		a=i;
+		
+		
+			i--;	
+		}
+		q=s.substring(a+1);
+		
+		int t=Integer.parseInt(q);
+		
+		return t;
+	}
+	//////////////////////////////////////////
+			static int rez1(String s)
+	{
+		String q="";
+		int a=-1,b=-1;
+		int i=s.length()-1;
+		while(a<0||b<0)
+		{if(s.charAt(i)==':')
+		a=i;
+			if(s.charAt(i)=='_')
+			b=i;
+		
+			i--;	
+		}
+		q=s.substring(b+1,a);
+		
+		int t;
+		
+			t=Integer.parseInt(q);
+		return t;
+	}
+	public zadatak4()
+	{
+		
+		try
+		{
+			ArrayList<String>utak=new ArrayList<String>();
+			ArrayList<String>tim=new ArrayList<String>();
+			ArrayList<Integer>pobjede=new ArrayList<Integer>();
+			ArrayList<Integer>porazi=new ArrayList<Integer>();
+			
+			FileReader fr=new FileReader("D:\\Toprek\\Ulazne datoteke\\Rezultati.txt");//citam rezultate
+		
+			
+			BufferedReader br=new BufferedReader(fr);
+		
+			String s="";
+			
+			
+			
+			int k1=0;
+			while((s=br.readLine())!=null)
+			{
+				utak.add(s);
+				
+				if(k1<1)
+				{tim.add(tim1(s));
+				tim.add(tim2(s));k1++;
+				}
+				else
+				{
+				
+				if(!tim.contains(tim1(s))&&(!tim.contains(tim2(s))))
+				{	tim.add(tim1(s));tim.add(tim2(s));}
+				if(tim.contains(tim1(s))&&(!tim.contains(tim2(s))))
+					tim.add(tim2(s));
+				if(!tim.contains(tim1(s))&&(tim.contains(tim2(s))))
+					tim.add(tim1(s));
+				}
+			}
+			for(int x=0;x<tim.size();x++)	
+			{
+				porazi.add(0);
+				pobjede.add(0);
+			}
+	//////////////////////////////////////////////////////
+
+		for(int x=0;x<utak.size();x++)
+			{	
+				String ss=utak.get(x);//lista utakmica
+					int i,j,a,b,c,d;
+						i=tim.indexOf(tim1(ss));//indeks tima1 u listi tim
+					j=tim.indexOf(tim2(ss));   //indeks tima2 u listi tim
+			
+				 a=pobjede.get(i);             //broj pobjeda prvog tima
+				 b=porazi.get(i);              //broj poraza prvog tima
+				 c=pobjede.get(j);				//broj pobjeda drugog tima
+				 d=	porazi.get(j);				//broj poraza drugog tima
+				
+					if(rez1(ss)>rez2(ss))
+				{
+					
+				a++;d++;
+					pobjede.set(i,a);
+					porazi.set(j,d);
+					
+				}
+					else
+				{
+				
+				c++;b++;
+					porazi.set(i,b);
+					pobjede.set(j,c);	
+						
+				}
+				
+			}
+
+		
+		JLabel ime=new JLabel("Tim");
+		JLabel prezime=new JLabel("Pobjede");
+		JLabel lozinka=new JLabel("Porazi");
+		
+		ime.setLocation(10,10);
+		ime.setSize(120,20);
+		
+		add(ime);
+
+		
+		prezime.setLocation(150,10);
+		prezime.setSize(120,20);
+		add(prezime);
+
+		
+		lozinka.setLocation(280,10);
+		lozinka.setSize(120,20);
+		add(lozinka);
+		this.setTitle("Tabela");
+		this.setSize(400,200);
+		this.setLocation(100,100);
+		this.setLayout(null);
+
+				ime.setFont(new Font ("MV Boli",Font.ITALIC, 15));
+				prezime.setFont(new Font ("MV Boli",Font.ITALIC, 15));
+				lozinka.setFont(new Font ("MV Boli",Font.ITALIC, 15));
+		
+	for(int a1=0;a1<tim.size()-1;a1++)
+				for(int b1=a1+1;b1<tim.size();b1++)
+					if(pobjede.get(a1)<pobjede.get(b1))
+					{
+						int p=pobjede.get(a1);
+						pobjede.set(a1,pobjede.get(b1));
+						pobjede.set(b1,p);
+						String q=tim.get(a1);
+						tim.set(a1,tim.get(b1));
+						tim.set(b1,q);
+						int w=porazi.get(a1);
+						porazi.set(a1,porazi.get(b1));
+						porazi.set(b1,w);
+					}
+		this.getContentPane().setBackground(Color.white);
+		int xx=40;
+	for(int i=0;i<pobjede.size();i++)
+	{
+		String sss=tim.get(i);
+		int aq=pobjede.get(i);
+		int bq=porazi.get(i);
+		JLabel timm=new JLabel(sss);
+		JLabel pob=new JLabel(""+aq);
+		JLabel por=new JLabel(""+bq);
+		timm.setLocation(10,xx);
+		timm.setSize(120,20);
+		add(timm);
+		pob.setLocation(150,xx);
+		pob.setSize(120,20);
+		add(pob);
+		por.setLocation(280,xx);
+		por.setSize(120,20);
+		add(por);
+		xx+=30;
+	}
+		setVisible(true);
+		br.close();
+		}
+		catch(IOException e)
+		{System.out.println(e.toString());}
+	} 
+	public static void main(String[]ar)
+	{
+		zadatak4 f=new zadatak4();
+	}
+}*/
