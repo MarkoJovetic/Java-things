@@ -1,0 +1,417 @@
+/*Data je forma sa unosom podataka osobe:
+ *imena- ne duze od 15 i ne manje od 3 slova, upis je zelenim nakosenim slivima, pozadina ovog tekst polja je siva.
+ *prezime- ne duze od 20 i ne krace od 3 slova.
+ *Datum: forme yyyy-mm-dd
+ *i dugme submit, na pritisak submit, ukoliko je forma validna podaci se cuvaju(u listi).
+ *Ukoliko nije validna javlja se poruka o podatku koji nije dobro unesen.
+ *Tekst polje imena, prezimena, datuma i submit su poravanti po x-osi.
+ *Tekst area- zauzima 100x100 velicinu,u donjem dijelu aplikacije.
+ *Pored submita nalazi se i dugme sortPoDatumu koje sortira osobe po datumu uzlazno. 
+ *na pritisak dugmeta prikazi u tekst arei se ispisu podaci o osobama.
+ *Dugme Izbaci izbacuje zadnju dodatu osobu iz kolekcije.
+ *Posotji i checkBox polja kojim se cekira jedno od polja godine od 1990-1995.
+ *Nijedno polje po defautu nije cekirano. 
+ *Ukoiko je cekirano neko polje, i dugme Prikazi se pritisne, u teskt arei se prikazu sve osobe rodjene te godine.
+ */
+
+import java.util.*;
+import javax.swing.*;
+import java.awt.*;
+import cs1.*;
+import java.awt.event.*;
+
+public class zadatak1 extends JFrame implements MouseListener, ActionListener
+{
+	JLabel ime=new JLabel("Ime");
+	JLabel prezime=new JLabel("Prezime");
+	JLabel datum=new JLabel ("Datum");
+	JLabel greska1=new JLabel();
+	JLabel greska2=new JLabel();
+	JLabel greska3=new JLabel();
+	JButton submit=new JButton("SUBMIT");
+	JButton sort=new JButton("SORT");
+	JButton izbaci=new JButton("IZBACI");
+	JButton prikazi=new JButton("PRIKAZI");
+	JTextField IME=new JTextField();
+	JTextField PREZIME=new JTextField();
+	JTextField DATUM=new JTextField("yyyy-mm-dd");
+	boolean uslov=true; //ako kliknemo jednom DATUM ukloni tekst, ako opet kliknemo, ne radi nista (uslov postaje false)
+	static	ArrayList<String> ful_name=new ArrayList<String>();
+	static	ArrayList<String> date=new ArrayList<String>();
+	JTextArea ispis=new JTextArea("");
+	JCheckBox c1=new JCheckBox("1990");
+	JCheckBox c2=new JCheckBox("1991");
+	JCheckBox c3=new JCheckBox("1992");
+	JCheckBox c4=new JCheckBox("1993");
+	JCheckBox c5=new JCheckBox("1994");
+	JCheckBox c6=new JCheckBox("1995");
+	ButtonGroup bg=new ButtonGroup();
+	JPanel polje=new JPanel();
+	
+	
+	
+	public zadatak1()
+	{
+		setSize(600,600);
+		setLayout(null);
+		setVisible(true);
+		setTitle("Program");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		ime.setSize(70,30);
+		ime.setLocation(10,10);
+		
+		prezime.setSize(70,30);
+		prezime.setLocation(10,50);
+		
+		datum.setSize(70,30);
+		datum.setLocation(10,90);
+		
+		IME.setSize(100,30);
+		IME.setLocation(100,10);
+		
+		PREZIME.setSize(100,30);
+		PREZIME.setLocation(100,50);
+		
+		DATUM.setSize(100,30);
+		DATUM.setLocation(100,90);
+		DATUM.addMouseListener(this);
+		
+		submit.setSize(100,30);
+		submit.setLocation(100,130);
+		submit.addActionListener(this);
+		
+		greska1.setSize(50,30);
+		greska1.setLocation(210,10);
+		
+		greska2.setSize(50,30);
+		greska2.setLocation(210,50);
+		
+		greska3.setSize(50,30);
+		greska3.setLocation(210,90);
+		
+		ispis.setSize(300,300);
+		ispis.setLocation(250,250);
+		ispis.setEditable(false);
+		
+		sort.setSize(70,30);
+		sort.setLocation(210,130);
+		sort.addMouseListener(this);
+		
+		izbaci.setSize(120,30);
+		izbaci.setLocation(290, 130);
+		izbaci.addMouseListener(this);
+		
+		bg.add(c1); bg.add(c2); bg.add(c3); bg.add(c4); bg.add(c5); bg.add(c6); 
+		polje.setSize(70,200);
+		polje.setLocation(10,200);
+		polje.add(c1); polje.add(c2); polje.add(c3); polje.add(c4); polje.add(c5); polje.add(c6); 
+			
+		prikazi.setSize(120,30);
+		prikazi.setLocation(10,400);
+		prikazi.addMouseListener(this);
+		
+		
+		add(ime); add(prezime); add(datum); add(IME); add(PREZIME); add(DATUM); add(submit); 
+		add(greska1); add(greska2); add(greska3); add(ispis); add(sort); add(izbaci); add(polje); add(prikazi);
+		
+		
+	}
+	//****************
+	static boolean pogresno_ime (String s) //vraca true ako ime nije dobro napisano
+	{
+		if(s.length()<3 || s.length()>15)
+			return true;
+		else 
+			return false;
+	}
+	
+	static boolean pogresno_pr(String s) //vraca true ako prezime nije dobro napisano
+	{
+		if(s.length()<3 || s.length()>20)
+			return true;
+		else 
+			return false;
+		
+	}
+	
+	static boolean pogresan_dat(String s) //vraca true ako datum nije dobro napisan
+	{
+		if( (s.length()!=10) || (s.charAt(4)!='-') || (s.charAt(7)!='-') )
+		{
+			return true;
+		}
+		else
+		{
+			boolean t=false;
+			for(int i=0;i<s.length();i++)
+			{
+				if((i!=4 && i!=7))
+				{
+				
+					if( (s.charAt(i)<'0') || (s.charAt(i)>'9') )
+					{
+						t=true;
+						break;
+					}
+				}
+			}
+			return t;
+		}
+	}
+	
+	static void sortiraj_datum(ArrayList<String> datum, ArrayList<String> ime)
+	{
+		int n=datum.size();
+		for(int i=0;i<n-1;i++)
+		{
+			String s=datum.get(i);				
+			String s1=s.substring(0,4);			
+			String s2=s.substring(5,7);			
+			String s3=s.substring(8);			
+			int god1=Integer.parseInt(s1);		
+			int mj1=Integer.parseInt(s2);		
+			int dan1=Integer.parseInt(s3);		
+			
+			for(int j=i+1;j<n;j++)
+			{
+				String a=datum.get(j);				
+				String a1=a.substring(0,4);			
+				String a2=a.substring(5,7);			
+				String a3=a.substring(8);			
+				int god2=Integer.parseInt(a1);		
+				int mj2=Integer.parseInt(a2);		
+				int dan2=Integer.parseInt(a3);
+			
+				if(god1<god2)
+				{
+					String pom=datum.get(i);
+					datum.set(i,datum.get(j));
+					datum.set(j,pom);
+					String pom1=ime.get(i);
+					ime.set(i,ime.get(j));
+					ime.set(j,pom1);
+				}
+				else if( (god1==god2) && (mj1<mj2) )
+				{
+					String pom=datum.get(i);
+					datum.set(i,datum.get(j));
+					datum.set(j,pom);
+					String pom1=ime.get(i);
+					ime.set(i,ime.get(j));
+					ime.set(j,pom1);
+				}
+				else if( (god1==god2) && (mj1==mj2) && (dan1<=dan2) )
+				{
+					String pom=datum.get(i);
+					datum.set(i,datum.get(j));
+					datum.set(j,pom);
+					String pom1=ime.get(i);
+					ime.set(i,ime.get(j));
+					ime.set(j,pom1);
+				}
+			}
+		}
+		
+	}
+	//****************
+	public void actionPerformed(ActionEvent e)
+	{
+		if(e.getSource()==submit)
+		{
+			if(pogresno_ime((String)(IME.getText())) )
+			{
+				JOptionPane.showMessageDialog(null,"Ime mora biti duze od 3, a krace od 15 slova");
+				greska1.setText("*greska");
+				greska2.setText("");
+				greska3.setText("");
+			}
+			else if(pogresno_pr((String)(PREZIME.getText())) )
+			{
+				JOptionPane.showMessageDialog(null,"Prezime mora biti duze od 3, a krace od 20 slova");
+				greska2.setText("*greska");
+				greska1.setText("");
+				greska3.setText("");
+				
+			}
+			else if(pogresan_dat((String)(DATUM.getText())) )
+			{
+				JOptionPane.showMessageDialog(null,"Datum mora biti formata yyyy-mm-dd");
+				greska3.setText("*greska");
+				greska1.setText("");
+				greska2.setText("");
+			}
+			else
+			{
+				greska1.setText("");
+				greska2.setText("");
+				greska3.setText("");
+				String s=((String)(IME.getText()))+" "+((String)(PREZIME.getText()));
+				ful_name.add(s);
+				date.add( (String)(DATUM.getText()) );
+				
+			}
+			
+			
+		}
+		
+		
+	}
+	//****************
+	@Override public void mouseClicked(MouseEvent e)
+	{
+		if(e.getSource()==DATUM && uslov)
+		{
+			DATUM.setText("");
+			uslov=false;
+		}
+		if(e.getSource()==sort)
+		{
+			ispis.setText("");
+			sortiraj_datum(date,ful_name);
+			for(int i=0;i<date.size();i++)
+			{
+				String pomocni1=ful_name.get(i);
+				String pomocni2=date.get(i);
+				String pomocni=pomocni1+"  "+pomocni2;
+				String newline="\n";
+				ispis.append(pomocni + newline);
+			}
+		}
+		if(e.getSource()==izbaci)
+		{
+			int n=date.size()-1;
+			String a=date.get(n);
+			date.remove(a);
+			String b=ful_name.get(n);
+			ful_name.remove(b);
+		}
+		if(e.getSource()==prikazi && c1.isSelected())
+		{
+			ispis.setText("");
+			String a=(String)(c1.getText());
+			int god=Integer.parseInt(a);
+			for(int i=0;i<date.size();i++)
+			{
+				String dat=date.get(i);
+				int godiste=Integer.parseInt(dat.substring(0,4));
+				if(god==godiste)
+				{
+					ispis.append(ful_name.get(i)+" "+date.get(i)+"\n");
+				}
+			}
+		}
+		if(e.getSource()==prikazi && c2.isSelected())
+		{
+			ispis.setText("");
+			String a=(String)(c2.getText());
+			int god=Integer.parseInt(a);
+			for(int i=0;i<date.size();i++)
+			{
+				String dat=date.get(i);
+				int godiste=Integer.parseInt(dat.substring(0,4));
+				if(god==godiste)
+				{
+					ispis.append(ful_name.get(i)+" "+date.get(i)+"\n");
+				}
+			}
+		}
+		if(e.getSource()==prikazi && c3.isSelected())
+		{
+			ispis.setText("");
+			String a=(String)(c3.getText());
+			int god=Integer.parseInt(a);
+			for(int i=0;i<date.size();i++)
+			{
+				String dat=date.get(i);
+				int godiste=Integer.parseInt(dat.substring(0,4));
+				if(god==godiste)
+				{
+					ispis.append(ful_name.get(i)+" "+date.get(i)+"\n");
+				}
+			}
+		}
+		if(e.getSource()==prikazi && c4.isSelected())
+		{
+			ispis.setText("");
+			String a=(String)(c4.getText());
+			int god=Integer.parseInt(a);
+			for(int i=0;i<date.size();i++)
+			{
+				String dat=date.get(i);
+				int godiste=Integer.parseInt(dat.substring(0,4));
+				if(god==godiste)
+				{
+					ispis.append(ful_name.get(i)+" "+date.get(i)+"\n");
+				}
+			}
+		}
+		if(e.getSource()==prikazi && c5.isSelected())
+		{
+			ispis.setText("");
+			ispis.setText("");
+			String a=(String)(c5.getText());
+			int god=Integer.parseInt(a);
+			for(int i=0;i<date.size();i++)
+			{
+				String dat=date.get(i);
+				int godiste=Integer.parseInt(dat.substring(0,4));
+				if(god==godiste)
+				{
+					ispis.append(ful_name.get(i)+" "+date.get(i)+"\n");
+				}
+			}
+		}
+		if(e.getSource()==prikazi && c6.isSelected())
+		{
+			ispis.setText("");
+			String a=(String)(c6.getText());
+			int god=Integer.parseInt(a);
+			for(int i=0;i<date.size();i++)
+			{
+				String dat=date.get(i);
+				int godiste=Integer.parseInt(dat.substring(0,4));
+				if(god==godiste)
+				{
+					ispis.append(ful_name.get(i)+" "+date.get(i)+"\n");
+				}
+			}
+		}
+	
+	}
+	@Override public void mousePressed(MouseEvent e)
+	{
+		
+	
+	}
+	@Override public void mouseReleased(MouseEvent e)
+	{
+		
+	
+	}
+	@Override public void mouseEntered(MouseEvent e)
+	{
+		
+	
+	}
+	@Override public void mouseExited(MouseEvent e)
+	{
+		
+	
+	}
+	//****************
+	
+	public static void main(String [] args)
+	{
+		ful_name.add("Maska Daska");
+		ful_name.add("Alex Top");
+		ful_name.add("Marco Polo");
+		ful_name.add("Robinson Crusoe");	
+		date.add("1990-12-24");
+		date.add("1991-02-22");
+		date.add("1994-10-24");
+		date.add("1962-05-22");
+		zadatak1 zad=new zadatak1();
+		
+	}
+}
